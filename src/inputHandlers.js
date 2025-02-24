@@ -1,4 +1,4 @@
-import getJardic from "./jardicHandler.js";
+import getJardic, { getJisho } from "./jardicHandler.js";
 import { addJapSpace, focusMainInput, getMainInputValue, putMagicInput, removeMagicInput } from "./mainInputHandlers.js";
 import { replaceRoma, replaceSelection, selectKana, toKatakana } from "./replacers.js";
 import { findCandidates } from "./wordSearch.js";
@@ -8,6 +8,7 @@ const optionsPopup = document.getElementById('input-options');
 const magicInput = document.getElementById('magicInput');
 const widthMaker = document.getElementById('widthMaker');
 const jardicOutput = document.getElementById('jardic');
+const jishoOutput = document.getElementById('jisho');
 
 let magicMode = false;
 let conversionMode = false;
@@ -21,6 +22,9 @@ async function initSearch() {
     lastQuery = inputValue;
     jardicOutput.innerHTML = 'ダウンロード中...';
     jardicOutput.innerHTML = await getJardic(inputValue);
+
+    jishoOutput.innerHTML = 'ダウンロード中...';
+    jishoOutput.innerHTML = await getJisho(inputValue);
 }
 
 function startMagic() {

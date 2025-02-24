@@ -3,15 +3,29 @@
     margin: 0;
     padding: 0;
 }
+
 body {
     font-size: 1.3rem;
     font-family: "Noto Sans JP", "Meiryo", "Hiragino Kaku Gothic Pro", "Arial", sans-serif;
 }
+
+main {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto 1fr;
+    /* padding: 0.2rem; */
+    /* background-color: aqua; */
+}
+
 .input {
+    height: 1.5em;
+    margin: 0.4rem;
     padding: 0.1em 0.4em;
     border: 1px solid;
-    display: flex;
+    border-radius: 3px;
+    /* display: flex; */
 }
+
 .magic-input {
     font-size: inherit;
     margin: 0;
@@ -20,49 +34,64 @@ body {
     border: none;
     border-bottom: 1px solid;
 }
+
 .magic-input:focus {
     outline: none;
 }
+
 .match {
     color: gray;
     font-size: 0.8em;
 }
+
 .input-options {
     position: absolute;
     background: aliceblue;
     /* top: -130px; */
 }
+
 .options-list {
     max-height: 15em;
     overflow: auto;
 }
+
 .selected-option {
     background-color: aquamarine;
 }
+
 .hidden {
     display: none;
 }
+
 .outer {
     position: absolute;
     top: -1000px;
 }
-/* #jardic {
-    position: absolute;
+
+.middle-space {
+    height: 5px;
 }
-.frame {
-    width: 100%;
-} */
 
 #jardic {
-    /* position: absolute; */
-    height: 90vh;
-    overflow: auto;;
+    overflow: auto;
 }
 
-#jardic * {
-    /* font-size: 95%; */
+#jisho {
+    overflow: auto;
 }
 
 #jardic table {
     width: 100%;
 }
+
+.interart {
+    border: 2px solid aquamarine;
+}
+
+/* table {
+    border-collapse: collapse;
+}
+
+tr {
+border-bottom: 1px solid black;
+} */
