@@ -1,0 +1,68 @@
+* {
+    /* font-size: 1.3rem; */
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-size: 1.3rem;
+    font-family: "Noto Sans JP", "Meiryo", "Hiragino Kaku Gothic Pro", "Arial", sans-serif;
+}
+.input {
+    padding: 0.1em 0.4em;
+    border: 1px solid;
+    display: flex;
+}
+.magic-input {
+    font-size: inherit;
+    margin: 0;
+    padding: 0 0.1em;
+    width: 1em;
+    border: none;
+    border-bottom: 1px solid;
+}
+.magic-input:focus {
+    outline: none;
+}
+.match {
+    color: gray;
+    font-size: 0.8em;
+}
+.input-options {
+    position: absolute;
+    background: aliceblue;
+    /* top: -130px; */
+}
+.options-list {
+    max-height: 15em;
+    overflow: auto;
+}
+.selected-option {
+    background-color: aquamarine;
+}
+.hidden {
+    display: none;
+}
+.outer {
+    position: absolute;
+    top: -1000px;
+}
+/* #jardic {
+    position: absolute;
+}
+.frame {
+    width: 100%;
+} */
+
+#jardic {
+    /* position: absolute; */
+    height: 90vh;
+    overflow: auto;;
+}
+
+#jardic * {
+    /* font-size: 95%; */
+}
+
+#jardic table {
+    width: 100%;
+}

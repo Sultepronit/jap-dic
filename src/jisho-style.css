@@ -1,0 +1,71 @@
+/* * {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-size: 1.3rem;
+} */
+
+.concept_light-status {
+    background-color: aqua;
+    display: none;
+}
+
+.light-details_link {
+    background-color: red;
+    display: none;
+}
+
+.concept_light {
+    /* border: 1px solid; */
+    /* background-color: rgb(199, 249, 249); */
+    background-color: aliceblue;
+    border-radius: 0.5rem;
+    margin: 0.5rem 0.1rem;
+    padding: 0.4rem;
+}
+
+.meaning-tags {
+    font-size: 0.8em;
+    color: gray;
+}
+
+.sense-tag {
+    display: block;
+}
+
+.concept_light-representation {
+    font-size: 1.5rem;
+}
+
+.furigana {
+    display: block;
+    font-size: 45%;
+    min-height: 1.15em;
+    margin-bottom: -0.7em;
+}
+
+.furigana .kanji {
+    min-width: 2.25em;
+}
+
+.furigana span {
+    display: inline-block;
+    text-align: center;
+    min-width: 2em;
+    line-height: 1.15;
+}
+
+/* .text {
+    margin-top: -0.1rem;
+} */
+
+.sentences ul.japanese li {
+    display: inline-block;
+    font-size: 18px;
+}
+
+.sentences .furigana {
+    font-size: 55%;
+}
