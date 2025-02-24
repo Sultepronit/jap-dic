@@ -58,3 +58,14 @@ export function addJapSpace() {
 export function getMainInputValue() {
     return mainInput.innerText;
 }
+
+export function selectAllOfMainInput() {    
+    const range = document.createRange();
+    const selection = window.getSelection();
+
+    range.selectNodeContents(mainInput);
+    // range.collapse(false);
+
+    selection.removeAllRanges();
+    selection.addRange(range);
+}

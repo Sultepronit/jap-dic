@@ -1,5 +1,5 @@
 import getJardic, { getJisho } from "./jardicHandler.js";
-import { addJapSpace, focusMainInput, getMainInputValue, putMagicInput, removeMagicInput } from "./mainInputHandlers.js";
+import { addJapSpace, focusMainInput, getMainInputValue, putMagicInput, removeMagicInput, selectAllOfMainInput } from "./mainInputHandlers.js";
 import { replaceRoma, replaceSelection, selectKana, toKatakana } from "./replacers.js";
 import { findCandidates } from "./wordSearch.js";
 
@@ -21,7 +21,8 @@ async function initSearch() {
 
     lastQuery = inputValue;
     jardicOutput.innerHTML = 'ダウンロード中...';
-    jardicOutput.innerHTML = await getJardic(inputValue);
+    // jardicOutput.innerHTML = await getJardic(inputValue);
+    getJardic(inputValue).then(result => jardicOutput.innerHTML = result);
 
     jishoOutput.innerHTML = 'ダウンロード中...';
     jishoOutput.innerHTML = await getJisho(inputValue);
@@ -248,6 +249,8 @@ function keyHandlers(e) {
                 breakConversion();
                 break;
         }
+    } else if (e.code === 'Escape') {
+        selectAllOfMainInput();
     } else if (e.key.length === 1 && !e.ctrlKey) {
         if (!magicMode) {
             focusMainInput();
