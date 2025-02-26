@@ -223,6 +223,12 @@ function keyHandlers(e) {
         } else {
             addJapSpace();
         }
+    } else if (e.code === 'Escape') {
+        if (conversionMode) {
+            breakConversion();
+        } else if (!magicMode) {
+            selectAllOfMainInput();
+        }
     } else if (conversionMode) {
         if (!(e.ctrlKey && e.code === 'KeyR')) e.preventDefault();
 
@@ -245,12 +251,7 @@ function keyHandlers(e) {
             case 'KeyK':
                 setKatakana()
                 break;
-            case 'Escape': 
-                breakConversion();
-                break;
         }
-    } else if (e.code === 'Escape') {
-        selectAllOfMainInput();
     } else if (e.key.length === 1 && !e.ctrlKey) {
         if (!magicMode) {
             focusMainInput();

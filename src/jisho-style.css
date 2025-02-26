@@ -1,52 +1,60 @@
-/* * {
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-size: 1.3rem;
-} */
-
-#jisho {
-    /* background-color: aqua; */
-}
-
 #jisho h4 {
     display: none;
 }
 
 .concept_light-status {
-    background-color: aqua;
     display: none;
 }
 
 .light-details_link {
-    background-color: red;
     display: none;
 }
 
 .concept_light {
-    border: 5px solid aqua;
-    /* background-color: rgb(199, 249, 249); */
-    /* background-color: aliceblue; */
+    border: 3px solid aqua;
     background-color: white;
     border-radius: 0.5rem;
-    /* border-bottom: 2px solid blue; */
     margin: 0.5rem 0.1rem;
     padding: 0.4rem;
 }
 
-.meaning-tags {
+.concept_light-representation {
+    font-size: 1.5rem;
+}
+
+.meaning-representation_notes {
+    font-size: 0.8em;
+}
+
+/* should be inline, change other class */
+/* .sense-tag {
+    display: block;
+} */
+
+/* has no own style: 獣 */
+/* .tag-restriction {
+    padding-inline: 0.6em;
+    font-size: 0.8em;
+    color: gray;
+} */
+
+.supplemental_info {
+    padding-inline: 0.6em;
     font-size: 0.8em;
     color: gray;
 }
 
-.sense-tag {
-    display: block;
+.meaning-tags {
+    margin-top: 0.5em;
+    font-size: 0.7em;
+    font-weight: bold;
+    color: gray;
 }
 
-.concept_light-representation {
-    font-size: 1.5rem;
+.meaning-abstract {
+    padding-inline: 0.6em;
+    font-size: 0.8em;
+    color: gray;
 }
 
 .furigana {
@@ -67,9 +75,9 @@ body {
     line-height: 1.15;
 }
 
-/* .text {
-    margin-top: -0.1rem;
-} */
+.sentences {
+    color: blue;
+}
 
 .sentences ul.japanese li {
     display: inline-block;
@@ -77,5 +85,6 @@ body {
 }
 
 .sentences .furigana {
-    font-size: 55%;
+    font-size: 60%;
+    margin-bottom: -0.5em;
 }
