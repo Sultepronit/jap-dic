@@ -1,3 +1,5 @@
+import fetchWithFeatures from "./services/fetchWithFeatures";
+
 const activeLib = {};
 
 async function getList(needle) {
@@ -5,15 +7,19 @@ async function getList(needle) {
     if (activeLib[index]) return activeLib[index];
 
     console.log('fetching list...');
-    try {
-        const result = await fetch(`../lib/${index}.json`);
-        const list = await result.json();
+    // try {
+    //     // const result = await fetch(`../lib/${index}.json`);
+    //     // const list = await result.json();
 
-        activeLib[index] = list;
-        return list;
-    } catch (error) {
-        return [];
-    }
+    //     activeLib[index] = list;
+    //     return list;
+    // } catch (error) {
+    //     return [];
+    // }
+    // fetchWithFeatures('https://example.comm');
+    const list = await fetchWithFeatures(`../lib/${index}.json`, 'json');
+    activeLib[index] = list;
+    return list || []; 
 }
 
 const cachedResults = {};

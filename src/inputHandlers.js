@@ -1,4 +1,5 @@
-import getJardic, { getJisho } from "./jardicHandler.js";
+// import getJardic, { getJisho } from "./dictionaryHandler.js";
+import initDicSearch from "./dictionaryHandler.js";
 import { addJapSpace, focusMainInput, getMainInputValue, putMagicInput, removeMagicInput, selectAllOfMainInput } from "./mainInputHandlers.js";
 import { replaceRoma, replaceSelection, selectKana, toKatakana } from "./replacers.js";
 import { findCandidates } from "./wordSearch.js";
@@ -7,26 +8,10 @@ const optionsPopup = document.getElementById('input-options');
 
 const magicInput = document.getElementById('magicInput');
 const widthMaker = document.getElementById('widthMaker');
-const jardicOutput = document.getElementById('jardic');
-const jishoOutput = document.getElementById('jisho');
 
 let magicMode = false;
 let conversionMode = false;
 let kanaMode = false;
-
-let lastQuery = '';
-async function initSearch() {
-    const inputValue = getMainInputValue();
-    if (inputValue === lastQuery) return;
-
-    lastQuery = inputValue;
-    jardicOutput.innerHTML = 'ダウンロード中...';
-    // jardicOutput.innerHTML = await getJardic(inputValue);
-    getJardic(inputValue).then(result => jardicOutput.innerHTML = result);
-
-    jishoOutput.innerHTML = 'ダウンロード中...';
-    jishoOutput.innerHTML = await getJisho(inputValue);
-}
 
 function startMagic() {
     magicMode = true;
@@ -40,7 +25,7 @@ async function stopMagic() {
 
     removeMagicInput(magicInput);
 
-    initSearch();
+    initDicSearch();
 }
 
 function arrangeKanaSuggection(list, entry, replacement) {
@@ -209,7 +194,7 @@ function keyHandlers(e) {
         } else if (magicMode) {
             stopMagic();
         } else {
-            initSearch();
+            initDicSearch();
         }
     } else if (e.code === 'Space') {
         e.preventDefault();
