@@ -2,24 +2,26 @@ import fetchWithFeatures from "./services/fetchWithFeatures";
 
 const activeLib = {};
 
+function safeParse(json) {
+    try {
+        return JSON.parse(json);
+    } catch {
+        return [];
+    }
+};
+
 async function getList(needle) {
     const index = needle[0];
     if (activeLib[index]) return activeLib[index];
 
     console.log('fetching list...');
-    // try {
-    //     // const result = await fetch(`../lib/${index}.json`);
-    //     // const list = await result.json();
-
-    //     activeLib[index] = list;
-    //     return list;
-    // } catch (error) {
-    //     return [];
-    // }
     // fetchWithFeatures('https://example.comm');
-    const list = await fetchWithFeatures(`../lib/${index}.json`, 'json');
+    // const list = await fetchWithFeatures(`../lib/${index}.json`, 'json');
+    const json = await fetchWithFeatures(`../lib/${index}.json`, 'text');
+    const list = safeParse(json);
+
     activeLib[index] = list;
-    return list || []; 
+    return list; 
 }
 
 const cachedResults = {};
