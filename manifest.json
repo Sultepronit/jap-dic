@@ -1,0 +1,35 @@
+{
+    "name": "Jap Dic",
+    "short_name": "JapDic",
+    "icons": [
+      {
+        "src": "/pwa-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "any"
+      },
+      {
+        "src": "/pwa-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any"
+      },
+      {
+        "src": "/pwa-maskable-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "maskable"
+      },
+      {
+        "src": "/pwa-maskable-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "maskable"
+      }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#BC002D",
+    "theme_color": "#BC002D",
+    "description": "My perfect for it's purpose Japanesed ictionary with custom Japanese input"
+}
