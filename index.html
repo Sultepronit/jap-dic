@@ -13,28 +13,31 @@
     <meta name="theme-color" content="#FFF" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
   </head>
-    <!-- <header>
-      <div id="status-bar"> </div>
-    </header> -->
+
+  <body>
     <main>
       <div id="status-bar"> </div>
       
-      <div id="input" class="input" contenteditable="true">
+      <!-- <div id="input" class="input" contenteditable="true">
         <input type="text" class="magic-input hidden" id="magicInput">
-      </div>
+      </div> -->
+
+      <input type="text" class="main-input" id="main-input">
+
+      <input type="text" class="magic-input hidden" id="magicInput">
 
       <div id="jardic"></div>
 
       <div class="middle-space"></div> 
 
       <div id="jisho"></div>
-
-      <!-- <p>***</p> -->
     </main>
 
     <div class="input-options hidden" id="input-options"></div>
     
-    <span class="width-maker outer" id="widthMaker"></span>
+    <span class="outer" id="widthMaker"></span>
+
+    <span class="outer" id="main-input-avatar"></span>
 
     <script type="module" src="/src/main.js"></script>
   </body>

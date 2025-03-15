@@ -1,7 +1,8 @@
-// import getJardic, { getJisho } from "./dictionaryHandler.js";
 import initDicSearch from "./dictionaryHandler.js";
-import { addJapSpace, focusMainInput, getMainInputValue, putMagicInput, removeMagicInput, selectAllOfMainInput } from "./mainInputHandlers.js";
+import { initKanjiReplacement } from "./kanjiReplacement.js";
+import { addJapSpace, focusMainInput, getMainInputSelection, getPositionForMagic, mainInput, putMagicInput, removeMagicInput, selectAllOfMainInput } from "./mainInputHandlers.js";
 import { replaceRoma, replaceSelection, selectKana, toKatakana } from "./replacers.js";
+import fetchWithFeatures from "./services/fetchWithFeatures.js";
 import { findCandidates } from "./wordSearch.js";
 
 const optionsPopup = document.getElementById('input-options');
@@ -12,6 +13,7 @@ const widthMaker = document.getElementById('widthMaker');
 let magicMode = false;
 let conversionMode = false;
 let kanaMode = false;
+let kanjiMagicMode = false;
 
 function startMagic() {
     magicMode = true;
@@ -20,11 +22,29 @@ function startMagic() {
     magicInput.focus();
 }
 
-async function stopMagic() {
+function stopMagic() {
     magicMode = false;
 
     removeMagicInput(magicInput);
 
+    initDicSearch();
+}
+
+async function startKanjiMagic() {
+    const query = getMainInputSelection();
+    // if (!query) return;
+    kanjiMagicMode = true;
+
+    const result = await fetchWithFeatures(`http://localhost:5050/?dic=kanji-lookup&word=${query}`, 'text');
+    console.log(result);
+    const candidates = result.split('');
+
+    addKanjiOptions(candidates);
+}
+
+function stopKanjiMagic() {
+    kanjiMagicMode = false;
+    optionsPopup.classList.add('hidden');
     initDicSearch();
 }
 
@@ -76,10 +96,33 @@ function addOptions(match, inputOptions) {
     selectedOption.classList.add('selected-option');
 }
 
+function addKanjiOptions(options) {
+    const { left, top } = getPositionForMagic();
+    optionsPopup.classList.remove('hidden');
+    optionsPopup.style.left = `${left}px`;
+    optionsPopup.style.top = `${top}px`;
+    
+    replaceSelection(mainInput, options[0]);
+    // putDataInMainInput(options[0]);
+
+    // const html = options.map(
+    //     (option, index) => `<p id="option-${index}">${option}</p>`
+    // ).join('');
+
+    const html = options.map((option) => `<p>${option}</p>`).join('');
+
+    // optionsPopup.innerHTML = `<div class="options-list">${html}</div>`;
+    optionsPopup.innerHTML = html;
+
+    // selectedOption = document.getElementById(`option-${0}`);
+    selectedOption = optionsPopup.children[0];
+    selectedOption.classList.add('selected-option');
+}
+
 function reselect(target) {
     if (target === selectedOption) return;
-
-    replaceSelection(magicInput, target.textContent);
+    
+    replaceSelection(magicMode ? magicInput : mainInput, target.textContent);
 
     selectedOption.classList.remove('selected-option');
     selectedOption = target;
@@ -99,7 +142,6 @@ function selectNextOption(increment) {
 }
 
 let initialInput = '';
-let lastWanted = '';
 let found = '';
 let remainder = '';
 let candidates = null;
@@ -128,7 +170,6 @@ function resetConversion(increment) {
 }
 
 async function searchAndConverse(input) {
-    lastWanted = input; 
     candidates = await findCandidates(input);
     candidateIndex = 0;
     handleConversion();
@@ -193,18 +234,23 @@ function keyHandlers(e) {
             finishStage();
         } else if (magicMode) {
             stopMagic();
+        } else if (kanjiMagicMode) {
+            stopKanjiMagic();
         } else {
             initDicSearch();
         }
     } else if (e.code === 'Space') {
         e.preventDefault();
         if (magicMode) {
-            // e.preventDefault();
             if (!conversionMode) {
                 startConversion();
             } else if (kanaMode) {
                 resumeConversion();
             }
+        } else if (e.ctrlKey) {
+            // getMainInputSelection();
+            // initKanjiReplacement();
+            startKanjiMagic();
         } else {
             addJapSpace();
         }
@@ -237,9 +283,19 @@ function keyHandlers(e) {
                 setKatakana()
                 break;
         }
+    } else if (kanjiMagicMode) {
+        if (!(e.ctrlKey && e.code === 'KeyR')) e.preventDefault();
+
+        switch (e.code) {
+            case 'ArrowDown':
+                selectNextOption(e.ctrlKey ? 5 : 1);
+                break;
+            case 'ArrowUp':
+                selectNextOption(e.ctrlKey ? -5 : -1);
+                break;
+        }
     } else if (e.key.length === 1 && !e.ctrlKey) {
         if (!magicMode) {
-            focusMainInput();
             startMagic();
         } else {
             magicInput.focus();

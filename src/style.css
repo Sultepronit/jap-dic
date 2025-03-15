@@ -31,18 +31,19 @@ main {
     grid-template-rows: auto auto auto auto auto 1fr;
 }
 
-.input {
-    height: 1.5em;
+.main-input {
+    font-size: inherit;
+    /* height: 1.5em; */
     margin: 0.4rem;
     padding: 0.1em 0.4em;
-    border: 1px solid;
-    border-radius: 3px;
+    /* border: 1px solid;
+    border-radius: 3px; */
     /* display: flex; */
 }
 
 .magic-input {
+    position: absolute;
     font-size: inherit;
-    margin: 0;
     padding: 0 0.1em;
     width: 1em;
     border: none;
@@ -61,10 +62,12 @@ main {
 .input-options {
     position: absolute;
     background: aliceblue;
-    /* top: -130px; */
+    
+    max-height: 15em;
+    overflow: auto;
 }
 
-.options-list {
+.options-list { /* do we need this? */
     max-height: 15em;
     overflow: auto;
 }

@@ -1,71 +1,87 @@
-const mainInput = document.getElementById('input');
+const mainInput = document.getElementById('main-input');
 
-export function focusMainInput(longWay = false) {
-    if (!longWay) {
-        if (document.activeElement === mainInput) return;
-        if (mainInput.innerText === '') mainInput.focus();
-        if (document.activeElement === mainInput) return;
+export { mainInput };
+
+export function focusMainInput() {
+    mainInput.focus();
+}
+
+const selection = { start: 0, end: 0 };
+function refreshSelection() {
+    selection.start = mainInput.selectionStart;
+    selection.end = mainInput.selectionEnd;
+}
+
+function putData(data, useSavedSelection = false) {
+    if (!useSavedSelection) refreshSelection();
+
+    mainInput.setRangeText(data, selection.start, selection.end, 'end');
+}
+
+// export { putData as putDataInMainInput };
+
+let avatar = null;
+export function getPositionForMagic() {
+    focusMainInput();
+    refreshSelection();    
+
+    if (!avatar) {
+        avatar = document.getElementById('main-input-avatar');
+        const inputStyle = window.getComputedStyle(mainInput);
+        avatar.style.font = inputStyle.font;
+        avatar.style.padding = inputStyle.padding;
+        avatar.style.border = inputStyle.border;
+        avatar.style.whiteSpace = 'pre';
     }
-    
-    const range = document.createRange();
-    const selection = window.getSelection();
 
-    range.selectNodeContents(mainInput);
-    range.collapse(false);
+    avatar.textContent = mainInput.value.substring(0, selection.start);
 
-    selection.removeAllRanges();
-    selection.addRange(range);
+    const inputRect = mainInput.getBoundingClientRect();
+    const textRect = avatar.getBoundingClientRect();
+    console.log(inputRect.left, textRect.width);
+
+    return {
+        left: inputRect.left + textRect.width - 10,
+        // top: inputRect.top + textRect.height
+        top: 36
+    }
 }
 
 export function putMagicInput(magicInput) {
-    const selection = window.getSelection();
-    if (!selection.rangeCount) return;
-
-    const range = selection.getRangeAt(0);
-
-    range.deleteContents();
-    range.insertNode(magicInput);
+    const { left, top } = getPositionForMagic();
     magicInput.classList.remove('hidden');
-
-    selection.removeAllRanges();
-
-    mainInput.contentEditable = 'false';
+    magicInput.style.left = `${left}px`;
+    magicInput.style.top = `${top}px`;
 }
 
 export function removeMagicInput(magicInput) {
-    const textNode = document.createTextNode(magicInput.value);
-    mainInput.insertBefore(textNode, magicInput);
+    putData(magicInput.value, true);
 
     magicInput.value = '';
     magicInput.classList.add('hidden');
 
-    mainInput.contentEditable = 'true';
-    
-    const selection = window.getSelection();    
-    const range = document.createRange();
-    range.setStartAfter(textNode);
-    range.setEndAfter(textNode);
-
-    selection.removeAllRanges();
-    selection.addRange(range);
+    focusMainInput();
 }
 
 export function addJapSpace() {
-    mainInput.innerText += '　';
-    focusMainInput(true);
+    focusMainInput();
+    putData('　');
 }
 
 export function getMainInputValue() {
-    return mainInput.innerText;
+    return mainInput.value;
 }
 
 export function selectAllOfMainInput() {    
-    const range = document.createRange();
-    const selection = window.getSelection();
+    mainInput.select();
+}
 
-    range.selectNodeContents(mainInput);
-    // range.collapse(false);
+export function getMainInputSelection() {
+    refreshSelection();
+    const { start, end } = selection;
+    if (start === end) return '';
 
-    selection.removeAllRanges();
-    selection.addRange(range);
+    // const toReplace = mainInput.value.substring(start, end);
+    // console.log(toReplace);
+    return mainInput.value.substring(start, end);
 }
