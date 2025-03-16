@@ -3,9 +3,9 @@ import { addJapSpace, focusMainInput, getMainInputSelection, getPositionForMagic
 import { replaceRoma, replaceSelection, selectKana, toKatakana } from "./replacers.js";
 import fetchWithFeatures from "./services/fetchWithFeatures.js";
 import { findCandidates } from "./wordSearch.js";
-import { addKanjiOptions, addWordOptions, hideOptionList, selectNextOption } from "./optionsHandlers.js";
 
 const magicPopup = document.getElementById('magic-popup');
+const optionsList = document.getElementById('input-options');
 
 const magicInput = document.getElementById('magicInput');
 const widthMaker = document.getElementById('widthMaker');
@@ -41,35 +41,111 @@ function stopMagic() {
     initDicSearch();
 }
 
-let attemptCounter = 0;
-let kanjiToReplace = '';
 async function startKanjiMagic() {
-    attemptCounter = 0;
-    kanjiToReplace = getMainInputSelection();
-    if (!kanjiToReplace) return;
+    const query = getMainInputSelection();
+    if (!query) return;
     kanjiMagicMode = true;
 
-    const candidates = await getKanjiReplacement(kanjiToReplace);
+    const candidates = await getKanjiReplacement(query);
 
-    putMagicPopup();
     addKanjiOptions(candidates);
-}
-
-async function retryKanjiMagic() {
-    const candidates = await getKanjiReplacement(kanjiToReplace, ++attemptCounter);
-    addKanjiOptions(candidates);
-}
-
-function breakKanjiMagic() {
-    kanjiMagicMode = false;
-    hideOptionList();
-    replaceSelection(mainInput, kanjiToReplace);
 }
 
 function stopKanjiMagic() {
-    kanjiMagicMode = false;    
-    hideOptionList();
+    kanjiMagicMode = false;
+    optionsList.classList.add('hidden');
     initDicSearch();
+}
+
+function arrangeKanaSuggection(list, entry, replacement) {
+    const entryIndex = list.indexOf(entry);
+    if (entryIndex >= 0 && entryIndex < 2) {
+        list[entryIndex] = replacement;
+        return null;
+    }
+
+    if (entryIndex >= 0) list.splice(entryIndex, 1);
+    return replacement;
+}
+
+let selectedOption = null;
+function addWordOptions(match, inputOptions) {
+    // const rect = magicInput.getBoundingClientRect();
+    inputOptions.classList.remove('hidden');
+    // optionsPopup.style.top = `${rect.bottom + window.scrollY}px`;
+    // optionsPopup.style.left = `${rect.left + window.scrollX}px`;
+
+    // we are adding to the top of list katakana (0) and hiragana (1) options
+    // but, if these options are already there inside the suggested list we don't do that
+    // and we adjust index of the selected option to be the first of the suggested ones
+    console.log(inputOptions);
+
+    const optionsList = [...inputOptions];
+
+    const addOptions = [
+        arrangeKanaSuggection(optionsList, '=', match),
+        arrangeKanaSuggection(optionsList, '=k', toKatakana(match))
+    ].filter(option => option);
+    console.log(addOptions);
+
+    const selectedIndex = addOptions.length;
+    
+    console.log(optionsList);
+
+    selectKana(magicInput, match);
+    replaceSelection(magicInput, optionsList[0]);
+
+    const options = [...addOptions, ...optionsList].map(
+        (option, index) => `<p id="option-${index}">${option}</p>`
+    ).join('');
+
+    inputOptions.innerHTML = `<div class="options-list">${options}</div>`;
+
+    selectedOption = document.getElementById(`option-${selectedIndex}`);
+    selectedOption.classList.add('selected-option');
+}
+
+function addKanjiOptions(options) {
+    // const { left, top } = getPositionForMagic();
+    optionsList.classList.remove('hidden');
+    // optionsPopup.style.left = `${left}px`;
+    // optionsPopup.style.top = `${top}px`;
+    putMagicPopup();
+    
+    replaceSelection(mainInput, options[0]);
+
+    // const html = options.map(
+    //     (option, index) => `<p id="option-${index}">${option}</p>`
+    // ).join('');
+
+    // optionsPopup.innerHTML = `<div class="options-list">${html}</div>`;
+    optionsList.innerHTML = options.map((option) => `<p>${option}</p>`).join('');
+
+    // selectedOption = document.getElementById(`option-${0}`);
+    selectedOption = optionsList.children[0];
+    selectedOption.classList.add('selected-option');
+}
+
+function reselect(target) {
+    if (target === selectedOption) return;
+    
+    replaceSelection(magicMode ? magicInput : mainInput, target.textContent);
+
+    selectedOption.classList.remove('selected-option');
+    selectedOption = target;
+    selectedOption.classList.add('selected-option');
+    selectedOption.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+
+function selectNextOption(increment) {
+    let target = selectedOption;
+    for (let i = 0; i !== increment; i += increment > 0 ? 1 : -1) {
+        const candidate = increment > 0 ? target.nextElementSibling : target.previousElementSibling;
+        if (!candidate) break;
+        target = candidate;
+    }
+
+    reselect(target);
 }
 
 let initialInput = '';
@@ -114,8 +190,7 @@ function startConversion() {
 
 function stopConversion() {
     conversionMode = false;
-    // optionsList.classList.add('hidden');
-    hideOptionList();
+    optionsList.classList.add('hidden');
 }
 
 function finishStage() {
@@ -143,8 +218,7 @@ function resumeConversion() {
 function setKanaMode() {
     if (kanaMode) return;
     kanaMode = true;
-    // optionsList.classList.add('hidden');
-    hideOptionList();
+    optionsList.classList.add('hidden');
     replaceSelection(magicInput, found);
     magicInput.setSelectionRange(magicInput.selectionStart, magicInput.value.length);
 }
@@ -180,8 +254,6 @@ function keyHandlers(e) {
             } else if (kanaMode) {
                 resumeConversion();
             }
-        } else if(kanjiMagicMode) {
-            retryKanjiMagic();
         } else if (e.ctrlKey) {
             // getMainInputSelection();
             // initKanjiReplacement();
@@ -192,8 +264,6 @@ function keyHandlers(e) {
     } else if (e.code === 'Escape') {
         if (conversionMode) {
             breakConversion();
-        } else if (kanjiMagicMode) {
-            breakKanjiMagic();
         } else if (!magicMode) {
             selectAllOfMainInput();
         }
@@ -225,10 +295,10 @@ function keyHandlers(e) {
 
         switch (e.code) {
             case 'ArrowDown':
-                selectNextOption(e.ctrlKey ? 5 : 1, true);
+                selectNextOption(e.ctrlKey ? 5 : 1);
                 break;
             case 'ArrowUp':
-                selectNextOption(e.ctrlKey ? -5 : -1, true);
+                selectNextOption(e.ctrlKey ? -5 : -1);
                 break;
         }
     } else if (e.key.length === 1 && !e.ctrlKey) {

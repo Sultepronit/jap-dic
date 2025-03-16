@@ -1,5 +1,5 @@
-import { kanagana } from './kanagana.js';
-import { romaKana, sokuon } from './romaKana.js';
+import { kanagana } from './lib/kanagana.js';
+import { romaKana, sokuon } from './lib/romaKana.js';
 
 export function replaceRoma(input) {
     for (const [roma, kana] of romaKana) {
