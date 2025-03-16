@@ -1,10 +1,10 @@
-import initDicSearch from "./dictionaryHandler.js";
-import { initKanjiReplacement } from "./kanjiReplacement.js";
-import { addJapSpace, focusMainInput, getMainInputSelection, getPositionForMagic, mainInput, putMagicInput, removeMagicInput, selectAllOfMainInput } from "./mainInputHandlers.js";
+import initDicSearch, { getKanjiReplacement } from "./services/dictionaryHandler.js";
+import { addJapSpace, focusMainInput, getMainInputSelection, getPositionForMagic, mainInput, implementMagic, selectAllOfMainInput } from "./mainInputHandlers.js";
 import { replaceRoma, replaceSelection, selectKana, toKatakana } from "./replacers.js";
 import fetchWithFeatures from "./services/fetchWithFeatures.js";
 import { findCandidates } from "./wordSearch.js";
 
+const magicPopup = document.getElementById('magic-popup');
 const optionsPopup = document.getElementById('input-options');
 
 const magicInput = document.getElementById('magicInput');
@@ -15,29 +15,42 @@ let conversionMode = false;
 let kanaMode = false;
 let kanjiMagicMode = false;
 
+function putMagicPopup() {
+    const { left, top } = getPositionForMagic();
+    magicPopup.classList.remove('hidden');
+    magicPopup.style.left = `${left}px`;
+    // magicContainer.style.top = `${top}px`;
+}
+
 function startMagic() {
     magicMode = true;
 
-    putMagicInput(magicInput);
+    // putMagicInput(magicInput);
+    putMagicPopup();
+    magicInput.classList.remove('hidden');
     magicInput.focus();
 }
 
 function stopMagic() {
     magicMode = false;
 
-    removeMagicInput(magicInput);
+    implementMagic(magicInput.value);
 
+    magicInput.value = '';
+    magicInput.classList.add('hidden');
+    
     initDicSearch();
 }
 
 async function startKanjiMagic() {
     const query = getMainInputSelection();
-    // if (!query) return;
+    if (!query) return;
     kanjiMagicMode = true;
 
-    const result = await fetchWithFeatures(`http://localhost:5050/?dic=kanji-lookup&word=${query}`, 'text');
-    console.log(result);
-    const candidates = result.split('');
+    // const result = await fetchWithFeatures(`http://localhost:5050/?dic=kanji-lookup&word=${query}`, 'text');
+    // console.log(result);
+    // const candidates = result.split('');
+    const candidates = await getKanjiReplacement(query);
 
     addKanjiOptions(candidates);
 }
@@ -61,10 +74,10 @@ function arrangeKanaSuggection(list, entry, replacement) {
 
 let selectedOption = null;
 function addOptions(match, inputOptions) {
-    const rect = magicInput.getBoundingClientRect();
+    // const rect = magicInput.getBoundingClientRect();
     optionsPopup.classList.remove('hidden');
-    optionsPopup.style.top = `${rect.bottom + window.scrollY}px`;
-    optionsPopup.style.left = `${rect.left + window.scrollX}px`;
+    // optionsPopup.style.top = `${rect.bottom + window.scrollY}px`;
+    // optionsPopup.style.left = `${rect.left + window.scrollX}px`;
 
     // we are adding to the top of list katakana (0) and hiragana (1) options
     // but, if these options are already there inside the suggested list we don't do that
@@ -97,22 +110,20 @@ function addOptions(match, inputOptions) {
 }
 
 function addKanjiOptions(options) {
-    const { left, top } = getPositionForMagic();
+    // const { left, top } = getPositionForMagic();
     optionsPopup.classList.remove('hidden');
-    optionsPopup.style.left = `${left}px`;
-    optionsPopup.style.top = `${top}px`;
+    // optionsPopup.style.left = `${left}px`;
+    // optionsPopup.style.top = `${top}px`;
+    putMagicPopup();
     
     replaceSelection(mainInput, options[0]);
-    // putDataInMainInput(options[0]);
 
     // const html = options.map(
     //     (option, index) => `<p id="option-${index}">${option}</p>`
     // ).join('');
 
-    const html = options.map((option) => `<p>${option}</p>`).join('');
-
     // optionsPopup.innerHTML = `<div class="options-list">${html}</div>`;
-    optionsPopup.innerHTML = html;
+    optionsPopup.innerHTML = options.map((option) => `<p>${option}</p>`).join('');
 
     // selectedOption = document.getElementById(`option-${0}`);
     selectedOption = optionsPopup.children[0];

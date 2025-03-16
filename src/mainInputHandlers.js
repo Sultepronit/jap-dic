@@ -18,8 +18,6 @@ function putData(data, useSavedSelection = false) {
     mainInput.setRangeText(data, selection.start, selection.end, 'end');
 }
 
-// export { putData as putDataInMainInput };
-
 let avatar = null;
 export function getPositionForMagic() {
     focusMainInput();
@@ -43,23 +41,12 @@ export function getPositionForMagic() {
     return {
         left: inputRect.left + textRect.width - 10,
         // top: inputRect.top + textRect.height
-        top: 36
+        // top: 36
     }
 }
 
-export function putMagicInput(magicInput) {
-    const { left, top } = getPositionForMagic();
-    magicInput.classList.remove('hidden');
-    magicInput.style.left = `${left}px`;
-    magicInput.style.top = `${top}px`;
-}
-
-export function removeMagicInput(magicInput) {
-    putData(magicInput.value, true);
-
-    magicInput.value = '';
-    magicInput.classList.add('hidden');
-
+export function implementMagic(data) {
+    putData(data, true);
     focusMainInput();
 }
 

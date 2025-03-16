@@ -41,13 +41,24 @@ main {
     /* display: flex; */
 }
 
-.magic-input {
+.magic-popup {
     position: absolute;
+    top: 41px;
+    /* border: 1px solid; */
+    /* background: white; */
+    background: aliceblue;
+    box-shadow: 1px 3px 9px black;
+}
+
+.magic-input {
+    /* position: absolute; */
     font-size: inherit;
     padding: 0 0.1em;
     width: 1em;
     border: none;
     border-bottom: 1px solid;
+    background: aliceblue;
+    margin-bottom: 0.3rem;
 }
 
 .magic-input:focus {
@@ -60,8 +71,8 @@ main {
 }
 
 .input-options {
-    position: absolute;
-    background: aliceblue;
+    /* position: absolute; */
+    /* background: aliceblue; */
     
     max-height: 15em;
     overflow: auto;
