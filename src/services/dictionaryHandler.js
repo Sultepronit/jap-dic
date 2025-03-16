@@ -42,10 +42,10 @@ export default async function initDicSearch() {
     jishoOutput.innerHTML = await getJisho(inputValue);
 }
 
-export async function getKanjiReplacement(query, attempt = 0) {
+export async function getKanjiReplacement(query, attempt = 1) {
 
-    // const result = await fetchWithFeatures(`http://localhost:5050/?dic=kanji-lookup&word=${query}${attempt > 0 ? '&attempt=' + attempt : ''}`, 'text');
-    const result = await fetchWithFeatures(`${jishoUrl}/?dic=kanji-lookup&word=${query}`, 'text');
+    // const result = await fetchWithFeatures(`http://localhost:5050/?dic=kanji-lookup&word=${query}${attempt > 1 ? '&attempt=' + attempt : ''}`, 'text');
+    const result = await fetchWithFeatures(`${jishoUrl}/?dic=kanji-lookup&word=${query}${attempt > 1 ? '&attempt=' + attempt : ''}`, 'text');
     console.log(result);
     return result.split('');
 }

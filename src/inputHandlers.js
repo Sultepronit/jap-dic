@@ -41,10 +41,10 @@ function stopMagic() {
     initDicSearch();
 }
 
-let attemptCounter = 0;
+let attemptCounter = 1;
 let kanjiToReplace = '';
 async function startKanjiMagic() {
-    attemptCounter = 0;
+    attemptCounter = 1;
     kanjiToReplace = getMainInputSelection();
     if (!kanjiToReplace) return;
     kanjiMagicMode = true;
