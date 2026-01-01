@@ -4,6 +4,7 @@ import { replaceRoma, replaceSelection, selectKana, toKatakana } from "./replace
 import fetchWithFeatures from "./services/fetchWithFeatures.js";
 import { findCandidates } from "./wordSearch.js";
 import { addKanjiOptions, addWordOptions, hideOptionList, selectNextOption } from "./optionsHandlers.js";
+import makeLatin from "./helpers/makeLatin.js";
 
 const magicPopup = document.getElementById('magic-popup');
 
@@ -161,6 +162,7 @@ function setKatakana() {
 
 function keyHandlers(e) {
     // console.log(e);
+    console.log(e.code)
     if (e.code === 'Enter') {
         e.preventDefault();
         if (conversionMode) {
@@ -232,6 +234,8 @@ function keyHandlers(e) {
                 break;
         }
     } else if (e.key.length === 1 && !e.ctrlKey) {
+        makeLatin(magicInput, e);
+
         if (!magicMode) {
             startMagic();
         } else {
@@ -253,6 +257,7 @@ function typeInHandler() {
 export function addInputHandlers() {
     focusMainInput();
     magicInput.addEventListener('input', typeInHandler);
+    magicInput.addEventListener('meddled-input', typeInHandler);
     magicInput.addEventListener('contentChange', adjustWidth);
     document.body.addEventListener('keydown', keyHandlers)
 }
