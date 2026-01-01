@@ -4,15 +4,10 @@ import fetchWithFeatures from "./fetchWithFeatures";
 const jardicOutput = document.getElementById('jardic');
 const jishoOutput = document.getElementById('jisho');
 
-async function getJardic(query) {    
-    // const response = await fetch(`https://us-central1-word-exp.cloudfunctions.net/fetchWebsiteContent?dic_jardic=on&dic_warodai=on&dic_edict=on&dic_yarxi=on&q=${query}&page=1`);
-    // const response = await fetch(`https://us-central1-word-exp.cloudfunctions.net/fetchWebsiteContent?dic_jardic=on&dic_warodai=on&dic_edict=on&q=${query}&page=1`);
-    // const response = await fetch(`https://us-central1-word-exp.cloudfunctions.net/fetchWebsiteContent?dic_jardic=on&dic_warodai=on&q=${query}&page=1`);
-    
-    const fetched = await fetchWithFeatures(
-        `https://us-central1-word-exp.cloudfunctions.net/fetchWebsiteContent?dic_jardic=on&dic_warodai=on&q=${query}&page=1`,
-        'text'
-    );
+const jardicUrl = import.meta.env.VITE_JAR_URL;
+async function getJardic(query) {  
+    const url = `${jardicUrl}/fetchWebsiteContent?dic_jardic=on&dic_warodai=on&q=${query}&page=1`;
+    const fetched = await fetchWithFeatures(url, 'text');
     
     const result = fetched
         .split('<table id="tabContent" width="100%">')[1]
@@ -24,9 +19,9 @@ async function getJardic(query) {
 }
 
 const jishoUrl = import.meta.env.VITE_JISHO_URL;
-
 async function getJisho(query) {    
-    return await fetchWithFeatures(`${jishoUrl}/?dic=jisho&word=${query}`, 'text');
+    // return await fetchWithFeatures(`${jishoUrl}/?dic=jisho&word=${query}`, 'text');
+    return await fetchWithFeatures(`${jishoUrl}/grabber/jisho?request=${query}`, 'text');
 }
 
 let lastQuery = '';
@@ -43,9 +38,10 @@ export default async function initDicSearch() {
 }
 
 export async function getKanjiReplacement(query, attempt = 1) {
-
-    // const result = await fetchWithFeatures(`http://localhost:5050/?dic=kanji-lookup&word=${query}${attempt > 1 ? '&attempt=' + attempt : ''}`, 'text');
-    const result = await fetchWithFeatures(`${jishoUrl}/?dic=kanji-lookup&word=${query}${attempt > 1 ? '&attempt=' + attempt : ''}`, 'text');
+    const attQuery = attempt > 1 ? `&attempt=${attempt}` : '';
+    // const url = `${jishoUrl}/?dic=kanji-lookup&word=${query}${attQuery}`
+    const url = `${jishoUrl}/artificial/guess-kanji?request=${query}${attQuery}`
+    const result = await fetchWithFeatures(url, 'text');
     console.log(result);
     return result.split('');
 }

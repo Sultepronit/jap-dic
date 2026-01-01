@@ -12,7 +12,8 @@ export default defineConfig({
                 runtimeCaching: [
                     { // articles
                         urlPattern: ({ url }) => {
-                            return url.searchParams.get('dic')
+                            // return url.searchParams.get('dic')
+                            return url.searchParams.get('request')
                                 || url.pathname.includes('/fetchWebsiteContent');
                         },
                         handler: 'CacheFirst',
