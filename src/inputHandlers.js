@@ -162,7 +162,7 @@ function setKatakana() {
 
 function keyHandlers(e) {
     // console.log(e);
-    console.log(e.code)
+    // console.log(e.code)
     if (e.code === 'Enter') {
         e.preventDefault();
         if (conversionMode) {

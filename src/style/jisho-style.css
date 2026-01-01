@@ -11,7 +11,8 @@
 }
 
 .concept_light {
-    border: 3px solid aqua;
+    /* border: 3px solid aqua; */
+    border: 2px solid green;
     background-color: white;
     border-radius: 0.5rem;
     margin: 0.5rem 0.1rem;
@@ -62,6 +63,20 @@
     font-size: 45%;
     min-height: 1.15em;
     margin-bottom: -0.7em;
+}
+
+ruby.furigana-justify rb {
+    display: block;
+    visibility: hidden;
+    overflow: hidden;
+    height: 0px;
+    /* font-size: 31px; */
+    font-size: 1.5rem;
+}
+
+ruby.furigana-justify rt {
+    font-size: 100%;
+    margin-top: -100px;
 }
 
 .furigana .kanji {
