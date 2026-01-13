@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jap Dic 1.5</title>
+    <title>Jap Dic 1.6.0</title>
 
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
@@ -24,13 +24,24 @@
 
       <input type="text" class="main-input" id="main-input">
 
+      <div id="tabs">
+        <button class="tab active" name="main">main</button>
+        <button class="tab" name="translate">translate</button>
+        <button class="tab" name="ai">AI</button>
+      </div>
+
       <!-- <input type="text" class="magic-input hidden" id="magicInput"> -->
+      <div class="articles">
+        <div id="main-article">
+            <div id="jardic"></div>
+            <div class="middle-space"></div> 
+            <div id="jisho"></div>
+        </div>
 
-      <div id="jardic"></div>
+        <div id="translate-article" class="hidden">translate</div>
 
-      <div class="middle-space"></div> 
-
-      <div id="jisho"></div>
+        <div id="ai-article" class="hidden">AI</div>
+      </div>
     </main>
 
     <div id="magic-popup" class="magic-popup">

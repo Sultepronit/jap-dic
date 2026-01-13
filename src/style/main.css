@@ -25,10 +25,79 @@ body {
     background-color: red;
 }
 
+/* grid-template-rows: auto auto auto auto auto auto 1fr; */
 main {
     height: 100vh;
     display: grid;
-    grid-template-rows: auto auto auto auto auto 1fr;
+    grid-template-rows: auto auto auto auto 1fr;
+}
+
+/* main {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+} */
+
+#tabs {
+    /* background-color: lightgray; */
+    width: fit-content;
+    /* padding: 0.2em 2em 0 0.5em; */
+    margin: 0 0.2em 0.2em;
+}
+
+.tab {
+    display: inline-block;
+    margin-inline: 0.1em;
+    border: none;
+    /* background-color: lightgray; */
+    background-color: aqua;
+    font: inherit;
+    height: 1.4em;
+    min-width: 3.5em;
+    padding-inline: 0.9em;
+    cursor: pointer;
+}
+
+.tab:hover {
+    background-color: #00ffff40
+    /* opacity: 0.5; */
+}
+
+.active, .tab.active:hover {
+    /* background-color: #fff; */
+    background-color: aliceblue;
+}
+
+/* .main-article { */
+.articles {
+    overflow: auto;
+    /* flex: 1 1 auto; */
+}
+
+#main-article {
+    overflow: auto;
+    /* height: 90vh; */
+    max-height: 100%;
+    display: grid;
+    grid-template-rows: auto auto auto 1fr;
+    /* display: flex;
+    flex-direction: rows; */
+}
+
+.middle-space {
+    height: 5px;
+}
+
+#jardic {
+    overflow: auto;
+}
+
+#jisho {
+    overflow: auto;
+}
+
+#jardic table {
+    width: 100%;
 }
 
 .main-input {
@@ -88,7 +157,10 @@ main {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
+    /* visibility: hidden;
+    position: absolute; */
+    /* left: -1000px; */
 }
 
 .outer {
@@ -96,24 +168,25 @@ main {
     top: -1000px;
 }
 
-.middle-space {
-    height: 5px;
-}
+/* jardic -------------------------------- */
 
-#jardic {
-    overflow: auto;
-}
+/* tr {
+    outline: 1px solid red;
+} */
 
-#jisho {
-    overflow: auto;
-}
-
-#jardic table {
-    width: 100%;
+table {
+    border: 2px solid red;
+    border-radius: 0.5rem;
 }
 
 .interart {
-    border: 2px solid aquamarine;
+    /* border: 2px solid aquamarine; */
+    /* border: 2px solid red; */
+    margin-inline: 0.5em;
+    /* color: red; */
+    background-color: red;
+    height: 1px;
+    border: none;
 }
 
 /* table {
