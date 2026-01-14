@@ -3,7 +3,10 @@ import fetchWithFeatures from "./fetchWithFeatures";
 
 const jardicOutput = document.getElementById('jardic');
 const jishoOutput = document.getElementById('jisho');
+const translationArticle = document.getElementById('translate-article');
+const aiAtricle = document.getElementById('ai-article');
 
+const jishoUrl = import.meta.env.VITE_JISHO_URL;
 const jardicUrl = import.meta.env.VITE_JAR_URL;
 async function getJardic(query) {  
     const url = `${jardicUrl}/fetchWebsiteContent?dic_jardic=on&dic_warodai=on&q=${query}&page=1`;
@@ -18,23 +21,43 @@ async function getJardic(query) {
    return `<table><tbody>${result}</tbody></table>`; 
 }
 
-const jishoUrl = import.meta.env.VITE_JISHO_URL;
 async function getJisho(query) {    
     // return await fetchWithFeatures(`${jishoUrl}/?dic=jisho&word=${query}`, 'text');
     return await fetchWithFeatures(`${jishoUrl}/grabber/jisho?request=${query}`, 'text');
 }
 
-let lastQuery = '';
-export default async function initDicSearch() {
-    const inputValue = getMainInputValue();
-    if (inputValue === lastQuery) return;
-
-    lastQuery = inputValue;
+async function updateMainArticle(query) {
     jardicOutput.innerHTML = 'ダウンロード中...';
-    getJardic(inputValue).then(result => jardicOutput.innerHTML = result);
+    getJardic(query).then(result => jardicOutput.innerHTML = result);
 
     jishoOutput.innerHTML = 'ダウンロード中...';
-    jishoOutput.innerHTML = await getJisho(inputValue);
+    jishoOutput.innerHTML = await getJisho(query);
+}
+
+async function updateTranslation(query) {
+    translationArticle.innerHTML = 'ダウンロード中...';
+    const url = `${jishoUrl}/gtranslate/ja-uk?request=${query}`;
+    translationArticle.innerHTML = await fetchWithFeatures(url, 'text');
+}
+
+async function updateAi(query) {
+    translationArticle.innerHTML = 'ダウンロード中...';
+    const url = `${jishoUrl}/artificial/translate-ja-uk?request=${query}`;
+    translationArticle.innerHTML = await fetchWithFeatures(url, 'text');
+}
+
+export default async function fetchArticle(query, mode) {
+    switch (mode) {
+        case 'main': 
+            updateMainArticle(query);
+            break;
+        case 'translate':
+            updateTranslation(query);
+            break;
+        case 'ai':
+            updateAi(query);
+            break;
+    }  
 }
 
 export async function getKanjiReplacement(query, attempt = 1) {

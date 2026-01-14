@@ -90,6 +90,7 @@ main {
 
 #jardic {
     overflow: auto;
+    padding-inline: 0.1rem;
 }
 
 #jisho {
@@ -177,12 +178,14 @@ main {
 table {
     border: 2px solid red;
     border-radius: 0.5rem;
+    /* margin-inline: 0.1em; */
 }
 
 .interart {
     /* border: 2px solid aquamarine; */
     /* border: 2px solid red; */
-    margin-inline: 0.5em;
+    /* margin-inline: 0.5em; */
+    margin: 0 0.5em 0.2em;
     /* color: red; */
     background-color: red;
     height: 1px;

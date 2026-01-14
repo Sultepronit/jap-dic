@@ -1,3 +1,6 @@
+import { getMainInputValue } from "./mainInputHandlers.js";
+import fetchArticle from "./services/dictionaryHandler.js";
+
 const tabs = document.getElementById('tabs');
 
 const articles = {
@@ -6,8 +9,18 @@ const articles = {
     ai: document.getElementById('ai-article'),
 }
 
+const resultsFor = { main: '', translate: '', ai: '' };
+
 let active = 'main';
 let activeTab = tabs.querySelector(`[name="main"]`);
+
+let query = '';
+
+function useQuery() {
+    if (query === resultsFor[active]) return;
+    resultsFor[active] = query;
+    fetchArticle(query, active);
+}
 
 function handleClick({ target }) {
     if (!target.classList.contains('tab') || target.classList.contains('active')) return;
@@ -19,9 +32,26 @@ function handleClick({ target }) {
     articles[active].classList.add('hidden');
     active = target.name;
     articles[active].classList.remove('hidden');
+
+    // if (query === resultsFor[active]) return;
+    // resultsFor[active] = query;
+    // fetchArticle(query, active);
+    useQuery();
 }
+tabs.addEventListener('click', handleClick);
 
 export default function addTabsHandler() {
     console.log(tabs);
     tabs.addEventListener('click', handleClick);
 }
+
+let lastQuery = '';
+document.addEventListener('new-query', () => {
+    query = getMainInputValue();
+    // if (query === lastQuery) return;
+    // lastQuery = query;
+    // if (query === resultsFor[active]) return;
+    // resultsFor[active] = query;
+    // fetchArticle(query, active);
+    useQuery();
+});

@@ -1,4 +1,4 @@
-import initDicSearch, { getKanjiReplacement } from "./services/dictionaryHandler.js";
+import fetchArticle, { getKanjiReplacement } from "./services/dictionaryHandler.js";
 import { addJapSpace, focusMainInput, getMainInputSelection, getPositionForMagic, mainInput, implementMagic, selectAllOfMainInput } from "./mainInputHandlers.js";
 import { replaceRoma, replaceSelection, selectKana, toKatakana } from "./replacers.js";
 import fetchWithFeatures from "./services/fetchWithFeatures.js";
@@ -15,6 +15,10 @@ let magicMode = false;
 let conversionMode = false;
 let kanaMode = false;
 let kanjiMagicMode = false;
+
+function dispatchResult() {
+    document.dispatchEvent(new Event('new-query'));
+}
 
 function putMagicPopup() {
     const { left, top } = getPositionForMagic();
@@ -39,7 +43,8 @@ function stopMagic() {
     magicInput.value = '';
     magicInput.classList.add('hidden');
     
-    initDicSearch();
+    // initDicSearch();
+    dispatchResult();
 }
 
 let attemptCounter = 1;
@@ -70,7 +75,8 @@ function breakKanjiMagic() {
 function stopKanjiMagic() {
     kanjiMagicMode = false;    
     hideOptionList();
-    initDicSearch();
+    // initDicSearch();
+    dispatchResult();
 }
 
 let initialInput = '';
@@ -172,7 +178,8 @@ function keyHandlers(e) {
         } else if (kanjiMagicMode) {
             stopKanjiMagic();
         } else {
-            initDicSearch();
+            // initDicSearch();
+            dispatchResult();
         }
     } else if (e.code === 'Space') {
         e.preventDefault();
