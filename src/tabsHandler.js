@@ -35,14 +35,12 @@ function handleClick({ target }) {
 
     useQuery();
 }
-tabs.addEventListener('click', handleClick);
 
 export default function addTabsHandler() {
-    console.log(tabs);
     tabs.addEventListener('click', handleClick);
-}
 
-document.addEventListener('new-query', () => {
-    query = getMainInputValue();
-    useQuery();
-});
+    document.addEventListener('new-query', () => {
+        query = getMainInputValue();
+        useQuery();
+    });
+}
