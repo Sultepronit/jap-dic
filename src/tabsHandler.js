@@ -11,8 +11,9 @@ const articles = {
 
 const resultsFor = { main: '', translate: '', ai: '' };
 
+const mainTab = tabs.querySelector(`[name="main"]`);
 let active = 'main';
-let activeTab = tabs.querySelector(`[name="main"]`);
+let activeTab = mainTab;
 
 let query = '';
 
@@ -22,17 +23,19 @@ function useQuery() {
     fetchArticle(query, active);
 }
 
-function handleClick({ target }) {
-    if (!target.classList.contains('tab') || target.classList.contains('active')) return;
-
+function changeTab(newTab) {
     activeTab.classList.remove('active');
-    activeTab = target;
+    activeTab = newTab;
     activeTab.classList.add('active');
 
     articles[active].classList.add('hidden');
-    active = target.name;
+    active = newTab.name;
     articles[active].classList.remove('hidden');
+}
 
+function handleClick({ target }) {
+    if (!target.classList.contains('tab') || target.classList.contains('active')) return;
+    changeTab(target);
     useQuery();
 }
 
@@ -41,6 +44,7 @@ export default function addTabsHandler() {
 
     document.addEventListener('new-query', () => {
         query = getMainInputValue();
+        if (active !== 'main') changeTab(mainTab);
         useQuery();
     });
 }

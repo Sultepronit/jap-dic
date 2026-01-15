@@ -52,8 +52,8 @@ main {
     /* background-color: lightgray; */
     background-color: aqua;
     font: inherit;
-    height: 1.4em;
-    min-width: 3.5em;
+    /* height: 1.4em; */
+    /* min-width: 3.5em; */
     padding-inline: 0.9em;
     cursor: pointer;
 }
