@@ -84,6 +84,10 @@ main {
     flex-direction: rows; */
 }
 
+#translate-article, #ai-article {
+    padding: 0 0.4em 0.4em;
+}
+
 .middle-space {
     height: 5px;
 }
@@ -182,14 +186,11 @@ table {
 }
 
 .interart {
-    /* border: 2px solid aquamarine; */
-    /* border: 2px solid red; */
-    /* margin-inline: 0.5em; */
     margin: 0 0.5em 0.2em;
     /* color: red; */
-    background-color: red;
+    /* background-color: red;
     height: 1px;
-    border: none;
+    border: none; */
 }
 
 /* table {

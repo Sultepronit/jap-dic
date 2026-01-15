@@ -43,7 +43,7 @@ async function updateTranslation(query) {
 async function updateAi(query) {
     translationArticle.innerHTML = 'ダウンロード中...';
     const url = `${jishoUrl}/artificial/translate-ja-uk?request=${query}`;
-    translationArticle.innerHTML = await fetchWithFeatures(url, 'text');
+    aiAtricle.innerHTML = await fetchWithFeatures(url, 'text');
 }
 
 export default async function fetchArticle(query, mode) {

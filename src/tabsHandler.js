@@ -33,9 +33,6 @@ function handleClick({ target }) {
     active = target.name;
     articles[active].classList.remove('hidden');
 
-    // if (query === resultsFor[active]) return;
-    // resultsFor[active] = query;
-    // fetchArticle(query, active);
     useQuery();
 }
 tabs.addEventListener('click', handleClick);
@@ -45,13 +42,7 @@ export default function addTabsHandler() {
     tabs.addEventListener('click', handleClick);
 }
 
-let lastQuery = '';
 document.addEventListener('new-query', () => {
     query = getMainInputValue();
-    // if (query === lastQuery) return;
-    // lastQuery = query;
-    // if (query === resultsFor[active]) return;
-    // resultsFor[active] = query;
-    // fetchArticle(query, active);
     useQuery();
 });
