@@ -1,6 +1,12 @@
 export default function makeLatin(input, e) {
-    if (!e.code.startsWith('Key')) return;
-    const expected = e.code.slice(3).toLowerCase()
+    // console.log(e.code)
+    let expected = e.key;
+
+    if (e.code.startsWith('Key')) {
+        expected = e.code.slice(3).toLowerCase();
+    } else if (e.code === 'Quote') {
+        expected = "'";
+    }
     if (e.key === expected) return;
 
     e.preventDefault();
