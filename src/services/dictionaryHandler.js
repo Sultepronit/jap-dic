@@ -41,7 +41,7 @@ async function updateTranslation(query) {
 }
 
 async function updateAi(query) {
-    translationArticle.innerHTML = 'ダウンロード中...';
+    aiAtricle.innerHTML = 'ダウンロード中...';
     const url = `${jishoUrl}/artificial/translate-ja-uk?request=${query}`;
     aiAtricle.innerHTML = await fetchWithFeatures(url, 'text');
 }
